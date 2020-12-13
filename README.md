@@ -12,7 +12,7 @@ The purpose of this project is to build a web application using [Flasks framewor
 
 ## Web Application Components 
 
-### Web Scraping 
+<h3> Web Scraping </h3>
 A 
 
 
