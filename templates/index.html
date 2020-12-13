@@ -22,8 +22,8 @@
       <div class="row" id="mars-news">
         <div class="col-md-12">
           <div class="media">
-            <div class="media-body">
-              <h2>Latest Mars News</h2>
+            <div class="media-body"style="border-bottom: thin solid rgba(128, 128, 128, 0.515);">
+              <h2 style="font-weight: bold;">Latest Mars News</h2>
               <h4 class="media-heading">{{ mars.news_title }}</h4>
               <p>{{ mars.news_paragraph }}</p>
             </div>
@@ -33,7 +33,7 @@
       <!-- Section for Featured Image and Facts table -->
       <div class="row" id="mars-featured-image">
         <div class="col-md-8">
-          <h2>Featured Mars Image</h2>
+          <h2 style="font-weight: bold;">Featured Mars Image</h2>
           <img
             src="{{mars.featured_image }}"
             class="img-responsive"
@@ -43,27 +43,25 @@
         <div class="col-md-4">
           <!-- Mars Facts -->
           <div class="row" id="mars-facts">
-            <h4>Mars Facts</h4>
+            <h3 style="font-weight: bold;">Mars Facts</h3>
             {{ mars.facts | safe }}
           </div>
         </div>
       <!-- Section for Mars Hemisphere iamges and data -->
-      </div id='Mars Hemisphere data'>
-        <div class ="col-md-6">
-          <h2>Mars Hemispheres</h2>
+      </div class="row" id='Mars Hemisphere data'>
+        <div class ="col-md-12">
+          <h3 style="text-align:center;font-weight: bold;" >Mars Hemispheres</h3>
       
             {% for hemisphere in mars.hemisphere %}
-              <div>
+              <div class="col-md-5" style="border: thin solid rgba(128, 128, 128, 0.515);margin: 20px;padding: 5px;">
                 <img
                 src="{{hemisphere['img_url']}}"
                 class="img-responsive"
                 alt="Responsive image"
                 /> 
-                <h3>"{{hemisphere['title']}}"</h3>
+                <h4 style="font-weight: bold;">{{hemisphere['title']}}</h4>
               </div>
-
             {% endfor %}
-
         </div>
       <div>
 
