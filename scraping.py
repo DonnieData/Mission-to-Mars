@@ -3,6 +3,8 @@ from splinter import Browser
 from bs4 import BeautifulSoup as soup
 import pandas as pd
 import datetime as dt
+import time
+
 
 def scrape_all():
     # Initiate headless driver for deployment
@@ -16,7 +18,8 @@ def scrape_all():
         "news_paragraph": news_paragraph,
         "featured_image": featured_image(browser),
         "facts": mars_facts(),
-        "last_modified": dt.datetime.now()
+        "last_modified": dt.datetime.now(),
+        "hemisphere": mars_hemisphere_data(browser)
     }
     # Stop webdriver and return data
     browser.quit()
@@ -98,6 +101,54 @@ def mars_facts():
     # convert extracted table to html so it can be displayed in web app/webpage
     return df.to_html(classes="table table-striped")
 
+def mars_hemisphere_data(browser):
+    # create empty list to format dat within
+    hemispheres_info = []
+    #  base url for interpolation
+    base_url = 'https://astrogeology.usgs.gov'
+
+    # visit the webpage 
+    url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
+    browser.visit(url)
+
+    # parse site 
+    html = browser.html
+    html_soup = soup(html, 'html.parser')
+    # drill down with html tags that contain desired data 
+    mars_info_container = html_soup.select('div.description')
+
+    try: 
+        # loop through scraped data, scrape additonal data and format 
+        for i in list(range(len(mars_info_container))):
+        
+            # parse extracted data and retrieve article header 
+            header = mars_info_container[i].find('h3').get_text()
+    
+            # retrieve embedded parital url and convert to full webpage link
+            article_partial_url = mars_info_container[i].find('a').get('href')
+            article_full_url = f'{base_url}{article_partial_url}'
+    
+            # visit article site 
+            browser.visit(article_full_url)
+            html = browser.html
+            #parse page 
+            image_parse = soup(html, 'html.parser')
+    
+            #retreive full-resolution image image url via tags
+            image_url = image_parse.select_one('ul li a').get('href')
+    
+            #format data into dictionary 
+            hemispheres_info.append({'img_url':image_url,'title':header})
+            time.sleep(.04)
+
+    except AttributeError:
+        return None
+        
+    return hemispheres_info
+    
+
 if __name__ == "__main__":
     # If running as script, print scraped data
     print(scrape_all())
+
+    
